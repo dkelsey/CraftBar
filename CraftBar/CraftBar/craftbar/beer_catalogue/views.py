@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
+from rest_framework import permissions
 # from rest_framework import status
 # from rest_framework.decorators import api_view
 # from rest_framework.response import Response
@@ -15,6 +16,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -23,6 +25,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 class BeerViewSet(viewsets.ModelViewSet):
@@ -31,6 +34,7 @@ class BeerViewSet(viewsets.ModelViewSet):
     """
     queryset = Beer.objects.all().order_by('id')
     serializer_class = BeerSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 '''
@@ -43,3 +47,4 @@ class BeerList(generics.ListCreateAPIView):
 class BeerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Beer.objects.all()
     serializer_class = BeerSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
