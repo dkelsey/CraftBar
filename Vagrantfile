@@ -154,18 +154,18 @@ Vagrant.configure("2") do |config|
         end
 
 
-        config.vm.provision "file", source: "ansible_rsa", destination: "/home/ubuntu/.ssh/id_rsa"
+        config.vm.provision "file", source: "ansible_rsa", destination: "/home/vagrant/.ssh/id_rsa"
         public_key = File.read("ansible_rsa.pub")
         config.vm.provision :shell, :inline =>"
             echo 'Copying ansible-vm public SSH Keys to the VM'
-            mkdir -p /home/ubuntu/.ssh
-            chmod 700 /home/ubuntu/.ssh
-            echo '#{public_key}' >> /home/ubuntu/.ssh/authorized_keys
-            chmod -R 600 /home/ubuntu/.ssh/authorized_keys
-            echo 'Host 192.168.*.*' >> /home/ubuntu/.ssh/config
-            echo 'StrictHostKeyChecking no' >> /home/ubuntu/.ssh/config
-            echo 'UserKnownHostsFile /dev/null' >> /home/ubuntu/.ssh/config
-            chmod -R 600 /home/ubuntu/.ssh/config
+            mkdir -p /home/vagrant/.ssh
+            chmod 700 /home/vagrant/.ssh
+            echo '#{public_key}' >> /home/vagrant/.ssh/authorized_keys
+            chmod -R 600 /home/vagrant/.ssh/authorized_keys
+            echo 'Host 192.168.*.*' >> /home/vagrant/.ssh/config
+            echo 'StrictHostKeyChecking no' >> /home/vagrant/.ssh/config
+            echo 'UserKnownHostsFile /dev/null' >> /home/vagrant/.ssh/config
+            chmod -R 600 /home/vagrant/.ssh/config
             ", privileged: false
 
     end
