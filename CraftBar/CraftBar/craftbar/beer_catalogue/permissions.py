@@ -21,3 +21,12 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 #        return user.is_staff()
         return request.user.is_staff
+
+    def has_permission(self, request, view):
+        """
+        Custom permission to aonly allow owners of an object to edit it.
+        """
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        return request.user.is_staff
