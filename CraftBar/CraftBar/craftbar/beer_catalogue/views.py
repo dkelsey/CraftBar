@@ -27,7 +27,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
 
 class BeerViewSet(viewsets.ModelViewSet):
@@ -36,17 +36,10 @@ class BeerViewSet(viewsets.ModelViewSet):
     """
     queryset = Beer.objects.all().order_by('id')
     serializer_class = BeerSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-
-'''
-class BeerList(generics.ListCreateAPIView):
-    queryset = Beer.objects.all()
-    serializer_class = BeerSerializer
-    '''
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
 
 class BeerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Beer.objects.all()
     serializer_class = BeerSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
