@@ -25,7 +25,7 @@ boxes = [
         :additional_pkgs => [ "libssl-dev", "libffi-dev" ],
         :additional_scripts => [ "/vagrant/provision_craftbar.sh" ],
         :ports => [ 5000, 8983 ],
-        :pip_pkgs => [ "ansible", "psychopg2"],
+        :pip_pkgs => [ "psychopg2"],
         :pip_pkgs2 => [ "Django" ]
     },
     {
@@ -38,26 +38,10 @@ boxes = [
         :additional_pkgs => [ "postgresql" ],
         :additional_scripts => [ "/vagrant/provision_db.sh" ],
         :ports => [ 5432 ],
-        :pip_pkgs => [ "ansible" ],
+        :pip_pkgs => [],
         :pip_pkgs2 => []
     }
 ]
-=begin
-    {
-        :box => "ubuntu/xenial64",
-        :name => "elk",
-        :eth1 => "192.168.101.13",
-        :mem => "2048",
-        :cpu => "1",
-        :gui => false,
-        :additional_pkgs => [],
-        :additional_scripts => [],
-        :ports => [5601,9201],
-        :pip_pkgs => [ "ansible" ],
-        :pip_pkgs => []
-    }
-]
-=end
 
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/xenial64"
@@ -67,6 +51,8 @@ Vagrant.configure("2") do |config|
         config.vm.box = opts[:box]
         config.vm.hostname = opts[:name]
         config.vm.network "private_network", ip: opts[:eth1]
+
+        config.vm.synced_folder "CraftBar/CraftBar/", "/home/ubuntu/CraftBar"
 
         if opts[:ports].any?
             opts[:ports].each do |port|
@@ -98,21 +84,6 @@ Vagrant.configure("2") do |config|
             sudo pip3 install ipython
         SHELL
 
-=begin
-        # install java
-        config.vm.provision "shell", inline: <<-SHELL
-    #<<COMMENT
-            # # install java
-            # sudo add-apt-repository ppa:webupd8team/java
-            # sudo apt-get update
-            #
-            # echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-            # echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
-            # apt-get install --yes oracle-java8-installer
-            # yes "" | apt-get -f install
-    #COMMENT
-=end
-
 
         if opts[:additional_pkgs].any?
             # install additional packages
@@ -128,7 +99,7 @@ Vagrant.configure("2") do |config|
             # install additional scripts to run
             opts[:additional_scripts].each do |script|
                 config.vm.provision "shell" do |s|
-                    s.inline = "sudo su -c $1 "
+                    s.inline = "chmod u+x $1 && sudo su -c $1 "
                     s.args = script
                 end
             end
@@ -154,18 +125,18 @@ Vagrant.configure("2") do |config|
         end
 
 
-        config.vm.provision "file", source: "ansible_rsa", destination: "/home/vagrant/.ssh/id_rsa"
+        config.vm.provision "file", source: "ansible_rsa", destination: "/home/ubuntu/.ssh/id_rsa"
         public_key = File.read("ansible_rsa.pub")
         config.vm.provision :shell, :inline =>"
             echo 'Copying ansible-vm public SSH Keys to the VM'
-            mkdir -p /home/vagrant/.ssh
-            chmod 700 /home/vagrant/.ssh
-            echo '#{public_key}' >> /home/vagrant/.ssh/authorized_keys
-            chmod -R 600 /home/vagrant/.ssh/authorized_keys
-            echo 'Host 192.168.*.*' >> /home/vagrant/.ssh/config
-            echo 'StrictHostKeyChecking no' >> /home/vagrant/.ssh/config
-            echo 'UserKnownHostsFile /dev/null' >> /home/vagrant/.ssh/config
-            chmod -R 600 /home/vagrant/.ssh/config
+            mkdir -p /home/ubuntu/.ssh
+            chmod 700 /home/ubuntu/.ssh
+            echo '#{public_key}' >> /home/ubuntu/.ssh/authorized_keys
+            chmod -R 600 /home/ubuntu/.ssh/authorized_keys
+            echo 'Host 192.168.*.*' >> /home/ubuntu/.ssh/config
+            echo 'StrictHostKeyChecking no' >> /home/ubuntu/.ssh/config
+            echo 'UserKnownHostsFile /dev/null' >> /home/ubuntu/.ssh/config
+            chmod -R 600 /home/ubuntu/.ssh/config
             ", privileged: false
 
     end
