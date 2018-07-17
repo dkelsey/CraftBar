@@ -4,13 +4,13 @@
 boxes = [
     {
         :box => "ubuntu/xenial64",
-        :name => "ansible",
+        :name => "jenkins",
         :eth1 => "192.168.101.10",
         :mem => "1024",
         :cpu => "1",
         :gui => false,
         :additional_pkgs => [],
-        :additional_scripts => [],
+        :additional_scripts => ["/vagrant/provision_jenkins.sh"],
         :ports => [],
         :pip_pkgs => [],
         :pip_pkgs2 => []
