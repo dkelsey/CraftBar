@@ -7,6 +7,8 @@ from rest_framework import permissions
 
 from craftbar.beer_catalogue.models import Beer
 from craftbar.beer_catalogue.serializers import UserSerializer, GroupSerializer, BeerSerializer
+from craftbar.beer_catalogue.permissions import IsOwnerOrReadOnly
+
 from rest_framework import generics
 
 
@@ -16,7 +18,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
 
 class GroupViewSet(viewsets.ModelViewSet):
