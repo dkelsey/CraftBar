@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+GUEST_USER = "vagrant"
+
 boxes = [
     {
         :box => "ubuntu/xenial64",
@@ -11,7 +13,7 @@ boxes = [
         :gui => false,
         :additional_pkgs => [],
         :additional_scripts => ["/vagrant/provision_jenkins.sh"],
-        :ports => [],
+        :ports => [ 8080 ],
         :pip_pkgs => [],
         :pip_pkgs2 => []
     },
@@ -22,7 +24,7 @@ boxes = [
         :mem => "2048",
         :cpu => "1",
         :gui => false,
-        :additional_pkgs => [ "libssl-dev", "libffi-dev", "python3-psycopg2" ],
+        :additional_pkgs => [ "libssl-dev", "libffi-dev", "python3-psycopg2", "sqlite" ],
         :additional_scripts => [ "/vagrant/provision_craftbar.sh" ],
         :ports => [ 5000, 8983 ],
         :pip_pkgs => [],
@@ -52,7 +54,7 @@ Vagrant.configure("2") do |config|
         config.vm.hostname = opts[:name]
         config.vm.network "private_network", ip: opts[:eth1]
 
-          config.vm.synced_folder "CraftBar/CraftBar/", "/home/vagrant/CraftBar"
+          config.vm.synced_folder "CraftBar/CraftBar/", "/home/#{GUEST_USER}/CraftBar"
 
           if opts[:ports].any?
               opts[:ports].each do |port|
@@ -123,18 +125,18 @@ Vagrant.configure("2") do |config|
           end
 
 
-          config.vm.provision "file", source: "ansible_rsa", destination: "/home/vagrant/.ssh/id_rsa"
+          config.vm.provision "file", source: "ansible_rsa", destination: "/home/#{GUEST_USER}/.ssh/id_rsa"
           public_key = File.read("ansible_rsa.pub")
           config.vm.provision :shell, :inline =>"
               echo 'Copying ansible-vm public SSH Keys to the VM'
-              mkdir -p /home/vagrant/.ssh
-              chmod 700 /home/vagrant/.ssh
-              echo '#{public_key}' >> /home/vagrant/.ssh/authorized_keys
-              chmod -R 600 /home/vagrant/.ssh/authorized_keys
-              echo 'Host 192.168.*.*' >> /home/vagrant/.ssh/config
-              echo 'StrictHostKeyChecking no' >> /home/vagrant/.ssh/config
-              echo 'UserKnownHostsFile /dev/null' >> /home/vagrant/.ssh/config
-              chmod -R 600 /home/vagrant/.ssh/config
+              mkdir -p /home/#{GUEST_USER}/.ssh
+              chmod 700 /home/#{GUEST_USER}/.ssh
+              echo '#{public_key}' >> /home/#{GUEST_USER}/.ssh/authorized_keys
+              chmod -R 600 /home/#{GUEST_USER}/.ssh/authorized_keys
+              echo 'Host 192.168.*.*' >> /home/#{GUEST_USER}/.ssh/config
+              echo 'StrictHostKeyChecking no' >> /home/#{GUEST_USER}/.ssh/config
+              echo 'UserKnownHostsFile /dev/null' >> /home/#{GUEST_USER}/.ssh/config
+              chmod -R 600 /home/#{GUEST_USER}/.ssh/config
               ", privileged: false
 
     end
