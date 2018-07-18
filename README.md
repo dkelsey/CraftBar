@@ -54,4 +54,4 @@ non-employee login<br>
 
 # QA/Testing
 
-See [Testing Notes](https://github.com/dkelsey/CraftBar/wiki/Testing-Notes) and [Test Cases](https://github.com/dkelsey/CraftBar/wiki/Testing-Notes#test-cases)on the wiki
+See [Testing Notes](https://github.com/dkelsey/CraftBar/wiki/Testing-Notes) and [Test Cases](https://github.com/dkelsey/CraftBar/wiki/Testing-Notes#test-cases) on the wiki
