@@ -51,3 +51,7 @@ Admin/employee<br>
 
 non-employee login<br>
 `buddy/buddy123`
+
+# QA/Testing
+
+See [Testing Note](https://github.com/dkelsey/CraftBar/wiki/Testing-Notes) on the wiki
