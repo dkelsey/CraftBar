@@ -47,7 +47,7 @@ Navigate to http://192.169.101.11:5000
 ### User accounts:
 
 Admin/employee<br>
-`admin/s3cret123`
+`admin/s3cr3t123`
 
 non-employee login<br>
 `buddy/buddy123`
