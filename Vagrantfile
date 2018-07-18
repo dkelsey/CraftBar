@@ -14,8 +14,7 @@ boxes = [
         :additional_pkgs => [],
         :additional_scripts => ["/vagrant/provision_jenkins.sh"],
         :ports => [ 8080 ],
-        :pip_pkgs => [],
-        :pip_pkgs2 => []
+        :pip_pkgs => []
     },
     {
         :box => "ubuntu/xenial64",
@@ -27,8 +26,7 @@ boxes = [
         :additional_pkgs => [ "libssl-dev", "libffi-dev", "python3-psycopg2", "sqlite" ],
         :additional_scripts => [ "/vagrant/provision_craftbar.sh" ],
         :ports => [ 5000, 8983 ],
-        :pip_pkgs => [],
-        :pip_pkgs2 => [ "Django" ]
+        :pip_pkgs => []
     },
     {
         :box => "ubuntu/xenial64",
@@ -40,8 +38,7 @@ boxes = [
         :additional_pkgs => [ "postgresql" ],
         :additional_scripts => [ "/vagrant/provision_db.sh" ],
         :ports => [ 5432 ],
-        :pip_pkgs => [],
-        :pip_pkgs2 => []
+        :pip_pkgs => []
     }
 ]
 
@@ -104,17 +101,6 @@ Vagrant.configure("2") do |config|
                   end
               end
           end
-
-=begin
-          if opts[:pip_pkgs2].any?
-              # install pip packages with sudo -H
-              config.vm.provision "shell" do |s|
-                  s.inline = "sudo -H pip install $1"
-                  s.args = opts[:pip_pkgs]
-              end
-          end
-=end
-
 
           if opts[:pip_pkgs].any?
               # install pip packages

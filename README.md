@@ -2,12 +2,27 @@
 Sample REST API
 Written in Django 2.0.7, djangorestframework 3.8.2, python 3.5.2
 
-Minimum endpoints
+#### REST Endpoints
+```json
+{
+    "users": "http://192.168.101.11:5000/users/",
+    "groups": "http://192.168.101.11:5000/groups/",
+    "beers": "http://192.168.101.11:5000/beers/"
+}
 ```
-users/
-groups/
-beers/
+
+#### Example Beer
+```json
+{
+    "url": "http://192.168.101.11:5000/beers/5/",
+    "name": "hot-dog-water",
+    "brewery": "the sink",
+    "beer_style": "gross",
+    "price": "1.99",
+    "description": "tastes like soup"
+}
 ```
+
 An employee (`is_staff == True`) can do all **CRUD**<br>
 All other users have **Read** access.
 
